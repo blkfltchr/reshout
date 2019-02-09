@@ -11,8 +11,8 @@ const User = require('../../models/User')
 // ACCESS:  Public
 router.get('/test', (req, res) => res.json({msg: 'Users works'}));
 
-// ROUTE:   GET api/users/register
-// DESC:    Register user
+// ROUTE:   POST api/users/register
+// DESC:    Register User
 // ACCESS:  Public
 router.post('/register', (req, res) => {
   User.findOne({ email: req.body.email })
@@ -43,6 +43,33 @@ router.post('/register', (req, res) => {
           })
         })
       }
+    })
+})
+
+// ROUTE:   GET api/users/login
+// DESC:    Login User / Return JWT Token
+// ACCESS:  Public
+router.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  // Find user by email
+  User.findOne({email})
+    .then(user => {
+      // Check for user
+      if(!user) {
+        return res.status(404).json({email: 'You have entered an invalid email or password.'});
+      }
+
+      // Check password
+      bcrypt.compare(password, user.password)
+        .then(isMatch => {
+          if(isMatch) {
+            res.json({msg: 'Success'})
+          } else {
+            return res.status(400).json({password: 'You have entered an invalid email or password.'});
+          }
+        })
     })
 })
 
