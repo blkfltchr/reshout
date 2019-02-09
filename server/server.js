@@ -5,8 +5,13 @@ const users = require('./routes/api/users')
 const profile = require('./routes/api/profile')
 const meetings = require('./routes/api/meetings')
 const reminders = require('./routes/api/reminders')
+const bodyParser = require('body-parser')
 
 const app = express();
+
+// Body parser middleware
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 // DB config
 const db = require('./config/keys').mongoURI;
