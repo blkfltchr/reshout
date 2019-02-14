@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create schema
-
+ // Create Schema
 const ProfileSchema = new Schema({
-  name: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
@@ -47,10 +46,11 @@ const ProfileSchema = new Schema({
         required: true
       },
       location: {
-        type: String,
+        type: String
       },
       from: {
-        type: Date
+        type: Date,
+        required: true
       },
       to: {
         type: Date
@@ -61,7 +61,7 @@ const ProfileSchema = new Schema({
       },
       description: {
         type: String
-      },
+      }
     }
   ],
   education: [
@@ -79,7 +79,8 @@ const ProfileSchema = new Schema({
         required: true
       },
       from: {
-        type: Date
+        type: Date,
+        required: true
       },
       to: {
         type: Date
@@ -90,7 +91,7 @@ const ProfileSchema = new Schema({
       },
       description: {
         type: String
-      },
+      }
     }
   ],
   social: {
@@ -116,4 +117,4 @@ const ProfileSchema = new Schema({
   }
 });
 
-module.exports = Profile = mongoose.model('profile', ProfileSchema)
+ module.exports = Profile = mongoose.model('profile', ProfileSchema);
