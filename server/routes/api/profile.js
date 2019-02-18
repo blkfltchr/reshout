@@ -33,6 +33,25 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
     .catch(err => res.status(404).json(err));
 })
 
+// ROUTE:   GET api/profile/all
+// DESC:    Get all profiles
+// ACCESS:  Public
+
+router.get('/all', (req, res) => {
+  const errors = {};
+  Profile.find()
+    .populate('user', ['name', 'avatar'])
+    .then(profiles => {
+      if(!profiles) {
+        errors.noprofile = 'There is no profile for this user.';
+        return res.status(404).json(errors)
+      }
+      res.json(profiles);
+    })
+    .catch(err => res.status(404).json({ noprofiles: 'There are no profiles for this user.' }));
+});
+
+
 // ROUTE:   GET api/profile/handle/:handle
 // DESC:    Get profile by handle
 // ACCESS:  Public
@@ -70,7 +89,6 @@ router.get('/user/:user_id', (req, res) => {
     })
     .catch(err => res.status(404).json({ noprofile: 'There is no profile for this user.' }));
 });
-
 
 // @route   POST api/profile
 // @desc    Create or edit user profile
