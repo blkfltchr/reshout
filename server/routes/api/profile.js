@@ -33,9 +33,44 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
     .catch(err => res.status(404).json(err));
 })
 
-// ROUTE:   POST api/profile
-// DESC:    Create or edit user profile
-// ACCESS:  Private
+// ROUTE:   GET api/profile/handle/:handle
+// DESC:    Get profile by handle
+// ACCESS:  Public
+
+router.get('/handle/:handle', (req, res) => {
+  const errors = {};
+
+  Profile.findOne({ handle: req.params.handle})
+    .populate('user', ['name', 'avatar'])
+    .then(profile => {
+      if(!profile) {
+        errors.noprofile = 'There is no profile for this user.'
+        res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err => res.status(404).json(err));
+});
+
+// ROUTE:   GET api/profile/user/:user_id
+// DESC:    Get profile by user ID
+// ACCESS:  Public
+
+router.get('/user/:user_id', (req, res) => {
+  const errors = {};
+
+  Profile.findOne({ user: req.params.user_id})
+    .populate('user', ['name', 'avatar'])
+    .then(profile => {
+      if(!profile) {
+        errors.noprofile = 'There is no profile for this user.'
+        res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err => res.status(404).json({ noprofile: 'There is no profile for this user.' }));
+});
+
 
 // @route   POST api/profile
 // @desc    Create or edit user profile
