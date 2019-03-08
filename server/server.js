@@ -4,7 +4,7 @@ const passport = require('passport');
 
 const users = require('./routes/api/users')
 const profile = require('./routes/api/profile')
-const meetings = require('./routes/api/meetings')
+const posts = require('./routes/api/posts')
 const reminders = require('./routes/api/reminders')
 const bodyParser = require('body-parser')
 
@@ -34,7 +34,7 @@ require('./config/passport')(passport);
 
 app.use('/api/users', users)
 app.use('/api/profile', profile)
-app.use('/api/meetings', meetings)
+app.use('/api/posts', posts)
 app.use('/api/reminders', reminders)
 
 const port = process.env.PORT || 5000;
